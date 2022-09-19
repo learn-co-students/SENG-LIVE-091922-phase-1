@@ -1,4 +1,4 @@
-//Data 
+// Data 
 const inventory = [
         {
             id:1,
@@ -15,7 +15,7 @@ const inventory = [
             title: 'JavaScript & JQuery: Interactive Front-End Web Development',
             author: 'Jon Duckett',
             price: 45.75,
-            reviews: [{userID: 15, content:'good way to learn JQuery'}],
+            reviews: [{userID: 15, content:'Good way to learn JQuery'}],
             inventory: 2,
             imageUrl: 'https://images-na.ssl-images-amazon.com/images/I/31SRWF+LkKL._SX398_BO1,204,203,200_.jpg'
         },
