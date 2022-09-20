@@ -40,8 +40,10 @@ header div h2{
     width:190px;
 }
 
-footer{
+footer {
     display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 footer div p{
