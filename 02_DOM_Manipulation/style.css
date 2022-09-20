@@ -29,13 +29,13 @@ header div h2{
     justify-content: space-between;
 }
 
-.list-li{
+.list-li {
     list-style: none;
     width:200px;
     box-shadow: 8px 10px #c9c8c8;
     padding: 5px;
-    
 }
+
 .list-li img{
     width:190px;
 }
