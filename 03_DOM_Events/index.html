@@ -8,11 +8,10 @@
     <link rel="stylesheet" href="style.css">
 
     <!-- Data file -->
-    <script defer src="src/data.js"></script>
+    <script src="src/data.js"></script>
     <!-- JavaScript file -->
     <!-- defer - this file will load after the DOM loads -->
-    <script defer src="src/index.js"></script>
-    
+    <script src="src/index.js"></script>    
 
     <title>DOM Events - Starter</title>
   </head>
@@ -35,7 +34,7 @@
             <input type="text" id="form-author" name="author">
           
             <label for="price">Price:</label>
-            <input type="number" id="form-price" name="price">
+            <input type="number" id="form-price" name="price" step="0.01">
           
             <label for="imageUrl">Image url:</label>
             <input type="text" id="form-imageUrl" name="imageUrl">
@@ -44,6 +43,7 @@
             <input type="text" id="inventory" name="inventory">
               
             <input type="submit" value="ADD BOOK"/>
+            <!-- <button>ADD BOOK</button> -->
           </form>
       </div>
         <div class="list">
@@ -58,5 +58,4 @@
       </footer>
     </div>
   </body>
-  
 </html>
