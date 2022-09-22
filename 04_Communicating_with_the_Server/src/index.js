@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
 
     const renderHeader = bookStore => {
@@ -40,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         discountInput.min = '0';
         discountInput.max = '100';
         discountInput.value = '0';
+        discountPercent.className = 'discount-percent';
         discountPercent.textContent = '0% Discount';
 
         bookCard.append(bookTitle, bookAuthor, bookInventory, bookPrice, discountPercent, discountSlider, bookImage, deleteButton);

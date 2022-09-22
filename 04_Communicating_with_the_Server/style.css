@@ -93,10 +93,12 @@ form{
     width: 400px; 
     display: flex;
     flex-direction: column;
-
 }
 
 footer{
+    text-align: center;
+}
 
+p.discount-percent {
     text-align: center;
 }
