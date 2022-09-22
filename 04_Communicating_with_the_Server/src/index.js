@@ -1,5 +1,41 @@
 
+// CRUD
+
+    // C => Create
+    // R => Read
+    // U => Update
+    // D => Delete
+
+// console.log(bookStore["name"]);
+
+
+// Asynchronous Code
+// setTimeout(() => console.log("Hello!"), 2000);
+
+// // Synchronous Code
+// const myName = "Louis";
+// console.log(myName);
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
+
+    // Promise States
+    
+        // pending
+        // fulfilled
+        // rejected
+
+    const fetchResource = url => {
+        return fetch(url)
+        .then(res => res.json())
+    }
+    
+    // fetchResource("http://localhost:3000/stores");
+    // fetchResource("http://localhost:3000/books");
+
+    // fetchResource("http://localhost:3000/stores")
+    // .then(data => console.log(data));
 
     const renderHeader = bookStore => {
         const title = document.querySelector('#store-name');
@@ -85,12 +121,25 @@ document.addEventListener('DOMContentLoaded', () => {
             imageUrl: "/04_Communicating_with_the_Server/assets/book-cover-placeholder.png"
         }
 
+        console.log(newBook);
+
         bookStore.inventory.push(newBook);
         renderBookCard(newBook);
     });
 
     // Function Invocations
-    renderHeader(bookStore);
-    renderFooter(bookStore);
-    bookStore.inventory.forEach(renderBookCard);
+    fetchResource("http://localhost:3000/stores/1")
+    .then(store => {
+        renderHeader(store);
+        renderFooter(store);    
+    })
+    .catch(error => {
+        console.error(`Issue with Retrieving Store: ${error}`)
+    });
+    
+    fetchResource("http://localhost:3000/books")
+    .then(books => books.forEach(renderBookCard))
+    .catch(error => { 
+        console.error(`Issue with Retrieving Books: ${error}`)
+    });
 });
