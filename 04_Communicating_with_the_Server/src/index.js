@@ -1,61 +1,94 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-// Render Functions
-    // Renders Header
-    function renderHeader(store){
-        document.querySelector('h1').textContent = store.name
-    }
-    // Renders Footer
-    function renderFooter(store){
-        const footerDivs = document.querySelectorAll('footer div')
-        footerDivs[0].textContent = store.name
-        footerDivs[1].textContent = store.address
-        footerDivs[2].textContent = store.hours
+    const renderHeader = bookStore => {
+        const title = document.querySelector('#store-name');
+        title.textContent = bookStore.name;
     }
 
-    function renderBookCard(cardData) {
-        const li = document.createElement('li')
-        const h3 = document.createElement('h3')
-        const pAuthor = document.createElement('p')
-        const pPrice = document.createElement('p')
-        const img = document.createElement('img')
-        const btn = document.createElement('button')
+    const renderFooter = bookStore => {
+        const footerDivs = document.querySelectorAll('footer div');
 
-        h3.textContent = cardData.title
-        pAuthor.textContent = cardData.author
-        pPrice.textContent = `$${cardData.price}`
-        btn.textContent = 'Delete'
+        footerDivs[0].textContent = bookStore.name;
+        footerDivs[1].textContent = bookStore.address;
+        footerDivs[2].textContent = bookStore.hours;
+    }
 
-        img.src = cardData.imageUrl
-        li.className = 'list-li'
+    const renderBookCard = book => {
 
-        //Event Listeners 
-        btn.addEventListener('click',()=>li.remove())
+        const bookCard = document.createElement('li');
+        const bookTitle = document.createElement('h3');
+        const bookAuthor = document.createElement('p');
+        const bookPrice = document.createElement('p');
+        const bookImage = document.createElement('img');
+        const bookInventory = document.createElement('p');
+        const deleteButton = document.createElement('button');
+
+        bookCard.className = 'list-li';
+        bookTitle.textContent = book.title;
+        bookAuthor.textContent = book.author;
+        bookPrice.textContent = `$${book.price.toFixed(2)}`;
+        bookImage.src = book.imageUrl;
+        bookInventory.textContent = `Inventory: ${book.inventory}`;
+        deleteButton.textContent = 'Delete';
+        
+        // Discount Widget
+        const discountSlider = document.createElement('div');
+        const discountInput = document.createElement('input');
+        const discountPercent = document.createElement('p');
+
+        discountInput.type = 'range';
+        discountInput.min = '0';
+        discountInput.max = '100';
+        discountInput.value = '0';
+        discountPercent.textContent = '0% Discount';
+
+        bookCard.append(bookTitle, bookAuthor, bookInventory, bookPrice, discountPercent, discountSlider, bookImage, deleteButton);
+        discountSlider.appendChild(discountInput);
+
+        // Query Selectors
+        const bookCardContainer = document.querySelector('#book-list');
+        bookCardContainer.appendChild(bookCard);
+
+        // Event Listeners
+        deleteButton.addEventListener('click', () => {
+            bookCard.remove();
+        });
+
+        discountInput.addEventListener('input', e => {
+            const discount = (1 - (e.target.value / 100));
+            bookPrice.textContent = `$${applyDiscount(book.price, discount)}`
+            discountPercent.textContent = `${e.target.value}% Discount`
+        });
+    }
+
+    // Utilities
+    const applyDiscount = (price, discount) => {
+        return ((price * discount).toFixed(2));
+    }
+
+    // Event Listeners
+    const bookForm = document.querySelector('#book-form');
     
-        li.append(h3,pAuthor,pPrice,img,btn)
-        document.querySelector('#book-list').append(li)
-    }
+    bookForm.addEventListener('submit', e => {
 
-// Event handlers 
-    function handleForm(e){
-        e.preventDefault()
-        //Builds Book
-        const book = {
+        e.preventDefault();
+
+        const newBook = {
+            id: bookStore.inventory.length + 1,
             title: e.target.title.value,
-            author:e.target.author.value,
-            price: e.target.price.value,
-            imageUrl: e.target.imageUrl.value,
-            inventory:e.target.inventory.value,
-            reviews:[]
+            author: e.target.author.value,
+            price: parseInt(e.target.price.value),
+            reviews: [],
+            inventory: parseInt(e.target.inventory.value),
+            imageUrl: "/04_Communicating_with_the_Server/assets/book-cover-placeholder.png"
         }
-        renderBookCard(book)
-    }
 
-//Invoking functions
-    renderHeader(bookStore)
-    renderFooter(bookStore)
-    bookStore.inventory.forEach(renderBookCard)
-    document.querySelector('#book-form').addEventListener('submit', handleForm)
+        bookStore.inventory.push(newBook);
+        renderBookCard(newBook);
+    });
 
-
-})
+    // Function Invocations
+    renderHeader(bookStore);
+    renderFooter(bookStore);
+    bookStore.inventory.forEach(renderBookCard);
+});
