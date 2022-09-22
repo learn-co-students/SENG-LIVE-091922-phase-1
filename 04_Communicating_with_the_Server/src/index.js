@@ -26,6 +26,32 @@ document.addEventListener('DOMContentLoaded', () => {
         // fulfilled
         // rejected
 
+    // Anatomy of a Fetch Request
+
+        // fetch(url)
+            // Returns a Promise That Contains
+            // the PromiseResult That We Pass
+            // On (Response Object)
+        // .then(res => res.json())
+            // Carries On the Response Object
+            // Parses Out the Data from the Response Object
+                // .json()
+            // res.json() => Returns a Promise That
+            // Contains the Promise Result That WE
+            // Pass On (Data Object - Array / JS Object)
+        // .then(books => books.forEach(renderBookCard))
+            // Data Is Passed On to Next CB Function
+            // Where It's Used to Handle Rendering
+        // .catch(error => { 
+        //     console.error(`Issue with Retrieving Books: ${error}`)
+        // });
+            // Put In Place a Catch Statement to Report
+            // Error if We Encounter at Any Point in Our
+            // Chain of Asynchronous Behaviors
+
+        
+
+
     const fetchResource = url => {
         return fetch(url)
         .then(res => res.json())
