@@ -106,12 +106,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         discountInput.addEventListener('input', e => {
             
-            const percent = e.target.value / 100;
+            const discount = (1 - (e.target.value / 100));
 
-            console.log(percent)
+            // console.log(discount)
 
             // Use Slider Value to Calculate / Render New Book Price
-            bookPrice.textContent = `$${applyDiscount(book.price, percent)}`
+            bookPrice.textContent = `$${applyDiscount(book.price, discount)}`
 
             // Use Slider Value to Render Discount Percentage
             discountPercent.textContent = `${e.target.value}% Discount`
@@ -122,13 +122,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Hoisted Up to renderBookCard()
 
-    const applyDiscount = (price, percent) => {
-        return ((price * (1 - percent)).toFixed(2));
-    }
-
+    // Original
     // function applyDiscount(price, percent) {
     //     return ((price * (1 - percent)).toFixed(2));
     // }
+
+    // Refactored
+    const applyDiscount = (price, discount) => {
+        return ((price * discount).toFixed(2));
+    }
 
     // Function Invocations
 
@@ -157,23 +159,22 @@ document.addEventListener('DOMContentLoaded', () => {
         // e.target.title => DOM Element Accessed By "name"
         // e.target.title.value => Value of DOM Element Accessed By "name"
 
-        console.log(e.target);
-
         // Target Input Via "id" 
         // console.log(e.target["form-title"])
 
         const newBook = {
-            // id
+            id: bookStore.inventory.length + 1,
             title: e.target.title.value,
             author: e.target.author.value,
             price: parseInt(e.target.price.value),
             reviews: [],
             inventory: parseInt(e.target.inventory.value),
-            imageUrl: e.target.imageUrl.value
+            imageUrl: "/03_DOM_Events/assets/book-cover-placeholder.png"
         }
 
         console.log(newBook);
 
+        bookStore.inventory.push(newBook);
         renderBookCard(newBook);
     })
 });
