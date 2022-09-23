@@ -1,9 +1,52 @@
+// JSON.stringify({name: "Louis"});
+
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Function to Handle Get Requests
+    // Config Object
+
+    // Function to Handle GET Requests
     const fetchResource = url => {
         return fetch(url)
         .then(res => res.json())
+    }
+
+    // Function to Handle POST Requests
+    // Two Pieces of Information:
+        // Request URL
+        // Configuration Object
+    const createResource = (url, body) => {
+        
+        const configurationObject = {
+            // Method
+            method: 'POST',
+            
+            // Header
+            headers: {
+                // Specifies the Final Format of the Data That 
+                // We Send With Our Request
+                'Content-Type': 'application/json',
+                
+                // Accepts Back Data in JSON Format
+                'Accept': 'application/json'
+            },
+            
+            // Body
+            body: JSON.stringify(body)
+        }
+
+        // Endpoints
+            // /stores
+                // GET => Collection of Store Objects (Array)
+                // POST => Create a New Stores Object
+            // /stores/1
+                // GET => Individual Store (Object)
+            // /books
+                // GET => Collection of Book Objects (Array)
+                // POST => Create a New Book Object
+            // /books/1
+                // GET => Individual Book (Object)
+        
+        return fetch(url, configurationObject);
     }
 
     const renderHeader = bookStore => {
@@ -20,6 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const renderBookCard = book => {
+        // console.log(book.id);
+        
         const bookCard = document.createElement('li');
         const bookTitle = document.createElement('h3');
         const bookAuthor = document.createElement('p');
@@ -28,6 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const bookInventory = document.createElement('p');
         const deleteButton = document.createElement('button');
 
+        // bookCard.id = `book-${book.id}`;
         bookCard.className = 'list-li';
         bookTitle.textContent = book.title;
         bookAuthor.textContent = book.author;
@@ -88,8 +134,30 @@ document.addEventListener('DOMContentLoaded', () => {
             imageUrl: "/05_POST_request/assets/book-cover-placeholder.png"
         }
 
-        console.log(newBook);
+        // Render Optimistically
+            // Swifter User Experience
+            // Requires Us To Undo The Optimistic DOM Change
+            // That We Made
         renderBookCard(newBook);
+
+        createResource("http://localhost:3000/books", newBook)
+        .catch(() => {
+
+            // debugger
+            
+            // Hone In on Final BookCard
+            const bookCards = document.querySelectorAll('li');
+            // const finalBook = Array.from(bookCards).slice(-1);
+            const finalBook = bookCards[bookCards.length - 1];
+
+            // Remove Final BookCard from DOM
+            finalBook.remove();
+        })
+
+        // Render Pessimistically
+            //  Sluggish User Experience
+            //  Does Not Requires Us to Undo Any Changes
+        // .then(() => renderBookCard(newBook));
     });
 
     // Function Invocations
