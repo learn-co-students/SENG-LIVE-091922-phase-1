@@ -1,4 +1,4 @@
-# Post Requests
+# POST Requests
 ## SWBAT
 - [ ] Observe how to send a  POST request using HTML forms and JavaScript
 - [ ] Explain the difference between optimistic and pessimistic rendering
