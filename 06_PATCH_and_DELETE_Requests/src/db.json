@@ -28,7 +28,7 @@
   "books": [
     {
       "id": 1,
-      "title": "Eloquent JavaScript: A Modern Introduction to Programming",
+      "title": "My Newest Book",
       "author": "Marjin Haverbeke",
       "price": 10,
       "reviews": [
@@ -37,7 +37,7 @@
           "content": "Good book, but not great for new coders"
         }
       ],
-      "inventory": 15,
+      "inventory": 100,
       "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/51IKycqTPUL._SX218_BO1,204,203,200_QL40_FMwebp_.jpg"
     },
     {
@@ -51,7 +51,7 @@
           "content": "good way to learn JQuery"
         }
       ],
-      "inventory": 2,
+      "inventory": 200,
       "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/31SRWF+LkKL._SX398_BO1,204,203,200_.jpg"
     },
     {
@@ -135,6 +135,15 @@
       ],
       "inventory": 20,
       "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/41oYsXjLvZL._SY344_BO1,204,203,200_.jpg"
+    },
+    {
+      "title": "Testing",
+      "author": "Testing",
+      "price": 123,
+      "reviews": [],
+      "inventory": 123,
+      "imageUrl": "/06_PATCH_and_DELETE_Requests/assets/book-cover-placeholder.png",
+      "id": 8
     }
   ]
 }

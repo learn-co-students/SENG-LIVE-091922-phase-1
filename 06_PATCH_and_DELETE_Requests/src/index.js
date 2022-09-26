@@ -1,50 +1,60 @@
-// JSON.stringify({name: "Louis"});
-
 document.addEventListener('DOMContentLoaded', () => {
 
     // Config Object
 
-    // Function to Handle GET Requests
+    // Function to Handle GET Requests - R (Read)
     const fetchResource = url => {
         return fetch(url)
         .then(res => res.json())
     }
 
-    // Function to Handle POST Requests
+    // Function to Handle POST Requests - C (Create)
     // Two Pieces of Information:
         // Request URL
         // Configuration Object
     const createResource = (url, body) => {
         
         const configurationObject = {
-            // Method
             method: 'POST',
-            
-            // Header
             headers: {
-                // Specifies the Final Format of the Data That 
-                // We Send With Our Request
                 'Content-Type': 'application/json',
-                
-                // Accepts Back Data in JSON Format
                 'Accept': 'application/json'
             },
-            
-            // Body
             body: JSON.stringify(body)
         }
+        
+        return fetch(url, configurationObject);
+    }
 
-        // Endpoints
-            // /stores
-                // GET => Collection of Store Objects (Array)
-                // POST => Create a New Stores Object
-            // /stores/1
-                // GET => Individual Store (Object)
-            // /books
-                // GET => Collection of Book Objects (Array)
-                // POST => Create a New Book Object
-            // /books/1
-                // GET => Individual Book (Object)
+    // Function to Handle PATCH Requests - U (Update)
+    // Two Pieces of Information:
+    // Request URL
+    // Configuration Object
+    const updateResource = (url, body) => {
+    
+        const configurationObject = {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(body)
+        }
+        
+        return fetch(url, configurationObject);
+    }
+
+    // Function to Handle DELETE Requests - D (Delete)
+    // One Pieces of Information:
+    // Request URL
+    const deleteResource = url => {
+    
+        const configurationObject = {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json'
+            }
+        }
         
         return fetch(url, configurationObject);
     }
@@ -104,13 +114,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Event Listeners
         deleteButton.addEventListener('click', () => {
-            bookCard.remove();
+            // bookCard.remove();
+
+            deleteResource(`http://localhost:3000/books/${book.id}`)
+            .then(() => { 
+                alert("Book Removed!");
+                bookCard.remove(); 
+            })
+            .catch(err => console.error(`Something Went Wrong: ${err}`))
         });
 
         discountInput.addEventListener('input', e => {
             const discount = (1 - (e.target.value / 100));
             bookPrice.textContent = `$${applyDiscount(book.price, discount)}`
             discountPercent.textContent = `${e.target.value}% Discount`
+        });
+
+        bookInventory.addEventListener('change', e => {
+            // const updateResource = (url, body) => {            
+            // console.log(`New Value: ${parseInt(e.target.value)}`);
+
+            updateResource(`http://localhost:3000/books/${book.id}`, {inventory: parseInt(e.target.value)})
+            .then(res => res.json())
+            // .then(data => console.log(data))
+            .then(console.log)
+            .catch(err => console.error(`Here's The Error: ${err}`));
         });
     }
 
@@ -132,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
             price: parseInt(e.target.price.value),
             reviews: [],
             inventory: parseInt(e.target.inventory.value),
-            imageUrl: "/06_PATCH_&_DELETE_requests/assets/book-cover-placeholder.png",
+            imageUrl: "/06_PATCH_and_DELETE_Requests/assets/book-cover-placeholder.png"
         }
 
         // Render Optimistically
