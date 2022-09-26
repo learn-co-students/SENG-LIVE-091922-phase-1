@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
             price: parseInt(e.target.price.value),
             reviews: [],
             inventory: parseInt(e.target.inventory.value),
-            imageUrl: "/05_POST_request/assets/book-cover-placeholder.png"
+            imageUrl: "/06_PATCH_&_DELETE_requests/assets/book-cover-placeholder.png",
         }
 
         // Render Optimistically
