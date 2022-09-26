@@ -28,7 +28,7 @@
   "books": [
     {
       "id": 1,
-      "title": "My Newest Book",
+      "title": "NEW TITLE",
       "author": "Marjin Haverbeke",
       "price": 10,
       "reviews": [
@@ -37,7 +37,7 @@
           "content": "Good book, but not great for new coders"
         }
       ],
-      "inventory": 100,
+      "inventory": 250,
       "imageUrl": "https://images-na.ssl-images-amazon.com/images/I/51IKycqTPUL._SX218_BO1,204,203,200_QL40_FMwebp_.jpg"
     },
     {
@@ -144,6 +144,15 @@
       "inventory": 123,
       "imageUrl": "/06_PATCH_and_DELETE_Requests/assets/book-cover-placeholder.png",
       "id": 8
+    },
+    {
+      "title": "Testing",
+      "author": "Testing",
+      "price": 123,
+      "reviews": [],
+      "inventory": 123,
+      "imageUrl": "/06_PATCH_and_DELETE_Requests/assets/book-cover-placeholder.png",
+      "id": 9
     }
   ]
 }

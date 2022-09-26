@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Two Pieces of Information:
         // Request URL
         // Configuration Object
+    // /stores 
+    // /books
     const createResource = (url, body) => {
         
         const configurationObject = {
@@ -30,6 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Two Pieces of Information:
     // Request URL
     // Configuration Object
+    // /stores/1
+    // /books/1
     const updateResource = (url, body) => {
     
         const configurationObject = {
@@ -114,8 +118,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Event Listeners
         deleteButton.addEventListener('click', () => {
+            
+            // Pure DOM Change / Does Not Persist
             // bookCard.remove();
 
+            // DOM Change + Persistence
             deleteResource(`http://localhost:3000/books/${book.id}`)
             .then(() => { 
                 alert("Book Removed!");
@@ -135,7 +142,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // console.log(`New Value: ${parseInt(e.target.value)}`);
 
             updateResource(`http://localhost:3000/books/${book.id}`, {inventory: parseInt(e.target.value)})
-            .then(res => res.json())
+            .then(res => { 
+                // Pessimistically Add Any Additional DOM Changes Here
+
+                res.json();
+            })
             // .then(data => console.log(data))
             .then(console.log)
             .catch(err => console.error(`Here's The Error: ${err}`));
