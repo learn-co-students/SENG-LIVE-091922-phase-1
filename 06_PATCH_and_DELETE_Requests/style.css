@@ -1,4 +1,4 @@
-header{
+header {
     background-image: url("assets/books.png");
     height: 10%;
     opacity: 0.8;
@@ -7,16 +7,15 @@ header{
     border-color: #103f22;
 
 }
-header div h1, header div h2{
+
+header div h1, header div h2 {
     text-align: center;
     color: aliceblue;
     text-shadow: 2px 4px #252525;
     font-family: Verdana;
 }
 
-
-
-header div h2{
+header div h2 {
     color: aliceblue;
     font-style: italic;
 
@@ -26,10 +25,9 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-
 }
 
-.list ul{
+.list ul {
     margin: 10px;
     padding: 10px;
     display: flex;
@@ -40,18 +38,19 @@ main {
     border-width:thin medium thick 10px; */
 }
 
-.list-li{
+.list-li {
     list-style: none;
     width:200px;
     box-shadow: 8px 10px #c9c8c8;
     padding: 5px;
     margin:10px;
- 
 }
-.list-li img{
+
+.list-li img {
     width:190px;
 }
-.list-li button{
+
+.list-li button {
     width:190px;
     margin: 15px 5px 15px 5px;
     border: none;
@@ -62,7 +61,7 @@ main {
     font-weight: bold;
 }
 
-#form-wrapper{
+#form-wrapper {
     border-top: solid;
     border-bottom: solid;
     border-width:thin;
@@ -71,16 +70,17 @@ main {
     padding: 10px;
 }
 
-label{
+label {
     font-family: Verdana;
 }
 
-input{
+input {
   height: 40px;
   width: 100%;
   margin: 3px;
 }
-input[type=submit]{
+
+input[type=submit] {
     border: none;
     background-color: #2e824d;
     color: rgb(255, 255, 255);
@@ -88,15 +88,22 @@ input[type=submit]{
     font-size: large;
     font-weight: bold;
 }
-form{
+
+form {
     margin: 10px auto 10px auto;
     width: 400px; 
     display: flex;
     flex-direction: column;
-
 }
 
-footer{
+.hidden {
+    display: none;
+}
 
+footer {
+    text-align: center;
+}
+
+.discount-percent {
     text-align: center;
 }
