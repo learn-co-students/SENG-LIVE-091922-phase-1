@@ -150,8 +150,61 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             
             const search = e.target.search.value;
-            console.log(search);
+            searchBooks(search);
         }
+
+        console.log(apiKEY);
+
+        // Private API (Google Books)
+        const searchBooks= search => {
+            fetch(`https://www.googleapis.com/books/v1/volumes?q=${search}&maxResults=10&key=${apiKEY}`)
+            .then(res => res.json())
+            .then(data => { 
+                console.log(data.items);
+                
+                // data.items.forEach(book => renderSearchResult(book));
+                data.items.forEach(renderSearchResult);
+            });
+        } 
+
+        const renderSearchResult = book => {
+            // console.log(book.volumeInfo.title);
+            // console.log(book.volumeInfo.authors);
+            // console.log(book.volumeInfo);
+
+            // Create <div> Container With a Class of "search-list"
+                // <h3> => Title
+                // <h4> => Author
+                    // If multiple authors, link each name together using "and"
+                // <p> => Book Summary
+
+            const searchResultContainer = document.createElement('div');
+            const bookTitle = document.createElement('h3');
+            const bookAuthors = document.createElement('h4');
+            const bookSummary = document.createElement('p');
+
+            searchResultContainer.className = "search-list";
+            bookTitle.textContent = book.volumeInfo.title;
+            bookAuthors.textContent = book.volumeInfo.authors[0];
+            bookSummary.textContent = book.volumeInfo.description;
+            
+
+            searchResultContainer.append(bookTitle, bookAuthors, bookSummary);
+            document.querySelector('main').appendChild(searchResultContainer);
+        }
+        
+        // Public API (PokeAPI)
+        // const pullPokemon = name => {
+        //     fetch(`https://pokeapi.co/api/v2/pokemon/${name}/`)
+        //     .then(res => res.json())
+        //     .then(data => { 
+        //         console.log(data);
+        //         console.log(`Base Experience: ${data.base_experience}`);
+        //         console.log(`Height: ${data.height}`);
+        //     });
+        // }
+        
+        // pullPokemon('mewtwo');
 
     // Event Listeners
         
