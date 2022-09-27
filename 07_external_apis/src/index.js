@@ -1,108 +1,207 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Fetch requests 
-        // Function for making a GET request 
-        function fetchResource(url){
+
+    // CRUD Fetch Requests
+
+        const fetchResource = url => {
             return fetch(url)
             .then(res => res.json())
         }
 
-        function createResources(url, body){
-            return fetch(url,{
-                method: 'POST', 
+        const createResource = (url, body) => {
+            
+            const configurationObject = {
+                method: 'POST',
                 headers: {
-                  'Content-Type': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
-                body: JSON.stringify(body),
-            })
-            .then(res => res.json())
-        }
-
-    // Rendering functions
-        // Renders Header
-        function renderHeader(store){
-            document.querySelector('h1').textContent = store.name
-        }
-        // Renders Footer
-        function renderFooter(store){
-            const footerDivs = document.querySelectorAll('footer div')
-            footerDivs[0].textContent = store.name
-            footerDivs[1].textContent = store.address
-            footerDivs[2].textContent = store.hours
-        }
-    
-        function renderBookCard(cardData) {
-            const li = document.createElement('li')
-            const h3 = document.createElement('h3')
-            const pAuthor = document.createElement('p')
-            const pPrice = document.createElement('p')
-            const img = document.createElement('img')
-            const btn = document.createElement('button')
-    
-            h3.textContent = cardData.title
-            pAuthor.textContent = cardData.author
-            pPrice.textContent = `$${cardData.price}`
-            btn.textContent = 'Delete'
-    
-            img.src = cardData.imageUrl
-            li.className = 'list-li'
-    
-            //Event Listeners 
-            btn.addEventListener('click',()=>li.remove())
-        
-            li.append(h3,pAuthor,pPrice,img,btn)
-            document.querySelector('#book-list').append(li)
-        }
-    
-    // Event Handlers
-        function handleForm(e){
-            e.preventDefault()
-            //Builds Book
-            const book = {
-                title: e.target.title.value,
-                author:e.target.author.value,
-                price: e.target.price.value,
-                imageUrl: e.target.imageUrl.value,
-                inventory:e.target.inventory.value,
-                reviews:[]
+                body: JSON.stringify(body)
             }
-            createResources('http://localhost:3000/books', book)
-            .then(renderBookCard)
-            .catch(e => console.error(e))
-
+            
+            return fetch(url, configurationObject);
         }
 
-        function handleRenderSearch(){
+        const updateResource = (url, body) => {
+        
+            const configurationObject = {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(body)
+            }
+            
+            return fetch(url, configurationObject);
+        }
+
+        const deleteResource = url => {
+        
+            const configurationObject = {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }
+            
+            return fetch(url, configurationObject);
+        }
+
+    // DOM Rendering
+
+        const renderHeader = bookStore => {
+            const title = document.querySelector('#store-name');
+            title.textContent = bookStore.name;
+        }
+
+        const renderFooter = bookStore => {
+            const footerDivs = document.querySelectorAll('footer div');
+
+            footerDivs[0].textContent = bookStore.name;
+            footerDivs[1].textContent = bookStore.address;
+            footerDivs[2].textContent = bookStore.hours;
+        }
+
+        const renderBookCard = book => {
+            const bookCard = document.createElement('li');
+            const bookTitle = document.createElement('h3');
+            const bookAuthor = document.createElement('p');
+            const bookPrice = document.createElement('p');
+            const bookImage = document.createElement('img');
+            const bookInventory = document.createElement('input');
+            const deleteButton = document.createElement('button');
+
+            // bookCard.id = `book-${book.id}`;
+            bookCard.className = 'list-li';
+            bookTitle.textContent = book.title;
+            bookAuthor.textContent = book.author;
+            bookPrice.textContent = `$${book.price.toFixed(2)}`;
+            bookImage.src = book.imageUrl;
+            deleteButton.textContent = 'Delete';
+            bookInventory.type = 'number';
+            bookInventory.value = book.inventory;
+            
+            // Discount Widget
+            const discountSlider = document.createElement('div');
+            const discountInput = document.createElement('input');
+            const discountPercent = document.createElement('p');
+
+            discountInput.type = 'range';
+            discountInput.min = '0';
+            discountInput.max = '100';
+            discountInput.value = '0';
+            discountPercent.className = 'discount-percent';
+            discountPercent.textContent = '0% Discount';
+
+            bookCard.append(bookTitle, bookAuthor, bookInventory, bookPrice, discountPercent, discountSlider, bookImage, deleteButton);
+            discountSlider.appendChild(discountInput);
+
+            // Query Selectors
+            const bookCardContainer = document.querySelector('#book-list');
+            bookCardContainer.appendChild(bookCard);
+
+            // Event Listeners
+            deleteButton.addEventListener('click', () => {
+                
+                // DOM Change + Persistence
+                deleteResource(`http://localhost:3000/books/${book.id}`)
+                .then(() => { 
+                    // alert("Book Removed!");
+                    bookCard.remove(); 
+                })
+                .catch(err => console.error(`Something Went Wrong: ${err}`))
+            });
+
+            discountInput.addEventListener('input', e => {
+                const discount = (1 - (e.target.value / 100));
+                bookPrice.textContent = `$${applyDiscount(book.price, discount)}`
+                discountPercent.textContent = `${e.target.value}% Discount`
+            });
+
+            bookInventory.addEventListener('change', e => {
+                updateResource(`http://localhost:3000/books/${book.id}`, {inventory: parseInt(e.target.value)})
+                .then(res => res.json())
+                // .then(data => console.log(data))
+                .then(console.log)
+                .catch(err => console.error(`Here's The Error: ${err}`));
+            });
+        }
+
+        const handleRenderSearch = () => {
             document.querySelector('main').innerHTML = `
-            <form id="api-Search">
+            <form id="api-search">
                 <label>API Search<label>
                 <input type="text" name="search"></input>
                 <input type="submit"></input>
             </form>
             `
 
-            document.querySelector('#api-search').addEventListener('submit', handleAPIQuery)
-        }
-        //Handles Google Books API search
-        function handleAPIQuery(e){
-            e.preventDefault()
-            const search = e.target.search.value
-               
+            document.querySelector('#api-search').addEventListener('submit', handleAPIQuery);
         }
 
+    // Utilities
     
-    
-    // Invoking functions    
-        fetchResource('http://localhost:3000/stores/1')
+        const applyDiscount = (price, discount) => {
+            return ((price * discount).toFixed(2));
+        }
+
+        const handleAPIQuery= (e) => {
+            
+            e.preventDefault();
+            
+            const search = e.target.search.value;
+            console.log(search);
+        }
+
+    // Event Listeners
+        
+        const bookForm = document.querySelector('#book-form');        
+        bookForm.addEventListener('submit', e => {
+
+            e.preventDefault();
+
+            const newBook = {
+                title: e.target.title.value,
+                author: e.target.author.value,
+                price: parseInt(e.target.price.value),
+                reviews: [],
+                inventory: parseInt(e.target.inventory.value),
+                imageUrl: "/07_external_apis/assets/book-cover-placeholder.png"
+            }
+
+            // Render Optimistically
+            renderBookCard(newBook);
+
+            createResource("http://localhost:3000/books", newBook)
+            .catch(() => {
+
+                const bookCards = document.querySelectorAll('li');
+                const finalBook = bookCards[bookCards.length - 1];
+
+                // Undo Optimistic Changes
+                finalBook.remove();
+            })
+
+            // Render Pessimistically
+            // .then(() => renderBookCard(newBook));
+        });
+
+        document.querySelector('#nav-search').addEventListener('click', handleRenderSearch);
+
+    // Initial Page Load / Rendering
+        
+        fetchResource("http://localhost:3000/stores/1")
         .then(store => {
-            renderHeader(store)
-            renderFooter(store)
+            renderHeader(store);
+            renderFooter(store);    
         })
-        .catch(e => console.error(e))
-    
-        fetchResource('http://localhost:3000/books')
+        .catch(error => {
+            console.error(`Issue with Retrieving Store: ${error}`)
+        });
+        
+        fetchResource("http://localhost:3000/books")
         .then(books => books.forEach(renderBookCard))
-        .catch(e => console.error(e))
-    
-        document.querySelector('#book-form').addEventListener('submit', handleForm)
-        document.querySelector('#nav-search').addEventListener('click', handleRenderSearch)
-})
+        .catch(error => { 
+            console.error(`Issue with Retrieving Books: ${error}`)
+        });
+});

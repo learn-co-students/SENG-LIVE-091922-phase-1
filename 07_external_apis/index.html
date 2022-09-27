@@ -12,13 +12,13 @@
     <script src="src/index.js"></script>
     
 
-    <title>JS Data Types and Variables</title>
+    <title>External APIs - Starter</title>
   </head>
   <body>
     <div class="list" id="header">
       <header>
         <div>
-          <h1></h1>
+          <h1 id="store-name"></h1>
           <div id="banner"></div>
         </div>
       
@@ -32,19 +32,16 @@
           <form id="book-form">
           
             <label for="title">Title:</label>
-            <input type="text" id="form-title" name="title">
+            <input type="text" id="form-title" name="title" required>
   
             <label for="author">Author:</label>
-            <input type="text" id="form-author" name="author">
+            <input type="text" id="form-author" name="author" required>
           
             <label for="price">Price:</label>
-            <input type="number" id="form-price" name="price">
-          
-            <label for="imageUrl">Image url:</label>
-            <input type="text" id="form-imageUrl" name="imageUrl">
+            <input type="number" id="form-price" name="price" required>
           
             <label for="inventory">Inventory:</label>
-            <input type="text" id="inventory" name="inventory">
+            <input type="text" id="inventory" name="inventory" required>
               
             <input type="submit" value="ADD BOOK"/>
           </form>
